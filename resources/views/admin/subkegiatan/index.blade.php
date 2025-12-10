@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-asset-path="{{ asset('asset/') }}" data-template="vertical-menu-template-free">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Dashboard Sub Kegiatan</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('asset/img/favicon/favicon.png') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('asset/vendor/fonts/boxicons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('asset/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('asset/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ asset('asset/css/demo.css') }}" />
+    <link rel="stylesheet" href="{{ asset('asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('asset/vendor/libs/apex-charts/apex-charts.css') }}" />
+    <script src="{{ asset('asset/vendor/js/helpers.js') }}"></script>
+    <script src="{{ asset('asset/js/config.js') }}"></script>
+
+    <style>
+        .table .column-jalur {
+            max-width: 150px;
+            /* Atur lebar kolom sesuai kebutuhan */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                <div class="app-brand demo">
+                    <a href="{{ route('beranda') }}" class="app-brand-link">
+                        <h3 class="mb-4">SiPemuda</h3>
+                    </a>
+                </div>
+                <div class="menu-inner-shadow"></div>
+                <ul class="menu-inner py-1">
+                    <li class="menu-item {{ request()->routeIs('admin.index') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Dashboards">Dashboard Admin</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.kegiatan.index') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.kegiatan.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Data Kegiatan</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.subKegiatan.index') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.subKegiatan.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Data Sub Kegiatan</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.peserta.index') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.peserta.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-list-check"></i>
+                            <div data-i18n="Experiences">Data Peserta</div>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                            <i class="bx bx-menu bx-sm"></i>
+                        </a>
+                    </div>
+                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                            <li>
+                                <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bx bx-power-off me-2"></i>
+                                        <span class="align-middle">Log Out</span>
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- / Navbar -->
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+
+                    
+
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Tables /</span> Data Sub Kegiatan</h4>
+
+                        {{-- 🔍 Fitur Pencarian & Pengurutan --}}
+                        <form method="GET" action="{{ route('admin.subKegiatan.index') }}" class="d-flex mb-3 align-items-center gap-2">
+                            <select name="filter_sub" class="form-select" style="max-width: 250px;">
+                                <option value="">-- Semua Sub Kegiatan --</option>
+                                @foreach ($allsubKegiatan as $sub)
+                                    <option value="{{ $sub->id }}" {{ request('filt
+                                    er_sub') == $sub->id ? 'selected' : '' }}>
+                                        {{ $sub->nama_subKegiatan }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            
+                            <input 
+                                type="text" 
+                                name="search" 
+                                class="form-control" 
+                                placeholder="Cari sub kegiatan..." 
+                                value="{{ request('search') }}" 
+                                style="max-width: 250px;"
+                            >
+
+                            {{-- 🔽 Dropdown Filter Sub Kegiatan --}}
+                            <select name="filter_sub" class="form-select" style="max-width: 250px;">
+                                <option value="">-- Semua Sub Kegiatan --</option>
+                                @foreach ($allsubKegiatan as $sub)
+                                    <option value="{{ $sub->id }}" {{ request('filter_sub') == $sub->id ? 'selected' : '' }}>
+                                        {{ $sub->nama_subKegiatan }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <select name="sort" class="form-select" style="max-width: 200px;">
+                                <option value="kode_subKegiatan" {{ request('sort') == 'kode_subKegiatan' ? 'selected' : '' }}>Urutkan: Kode</option>
+                                <option value="nama_subKegiatan" {{ request('sort') == 'nama_subKegiatan' ? 'selected' : '' }}>Urutkan: Nama</option>
+                            </select>
+
+                            <select name="direction" class="form-select" style="max-width: 150px;">
+                                <option value="asc" {{ request('direction') == 'asc' ? 'selected' : '' }}>Naik</option>
+                                <option value="desc" {{ request('direction') == 'desc' ? 'selected' : '' }}>Turun</option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bx bx-search"></i>Cari
+                            </button>
+                        </form>
+
+
+
+                        <!-- Tambah Kegiatan Button -->
+                        <a href="{{ route('admin.subKegiatan.create') }}" class="btn btn-primary">Tambah</a>
+
+                        <!-- Striped Rows -->
+                        <div class="card">
+                            <h5 class="card-header">Data Sub Kegiatan</h5>
+                            <div class="table-responsive text-nowrap">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Kode Sub Kegiatan</th>
+                                            <th>Nama Sub Kegiatan</th>
+                                            <th>Kegiatan Induk</th>
+                                            <th>Tanggal</th>
+                                            <th>Jam Mulai</th>
+                                            <th>Jam Selesai</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                        @foreach ($subKegiatan as $item)
+                                        <tr>
+                                            <td>{{ $subKegiatan->firstItem() + $loop->index }}</td>
+                                            <td>{{ $item->kode_subKegiatan }}</td>
+                                            <td>{{ $item->nama_subKegiatan }}</td>
+                                            <td>{{ $item->kegiatan->nama_kegiatan ?? '-' }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($item->tanggal_mulai_sub)->format('d/m/Y') }} - 
+    {{ \Carbon\Carbon::parse($item->tanggal_selesai_sub)->format('d/m/Y') }}
+</td>
+<td>{{ $item->jam_mulai_sub ?? '-' }}</td>
+<td>{{ $item->jam_selesai_sub ?? '-' }}</td>
+<td>
+    <div class="dropdown">
+        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+            <i class="bx bx-dots-vertical-rounded"></i>
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ route('admin.subKegiatan.edit', $item->id) }}">
+                <i class="bx bx-edit-alt me-1"></i> Edit
+            </a>
+            <form action="{{ route('admin.subKegiatan.destroy', $item->id) }}" method="POST" 
+                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="dropdown-item">
+                    <i class="bx bx-trash me-1"></i> Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</td>
+
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--/ Striped Rows -->
+                    </div>
+                    <!-- / Content -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <script src="{{ asset('asset/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('asset/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('asset/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('asset/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('asset/vendor/js/menu.js') }}"></script>
+    <script src="{{ asset('asset/js/main.js') }}"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+
+</html>
