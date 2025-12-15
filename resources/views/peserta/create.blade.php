@@ -26,7 +26,7 @@
   <main id="main" class="mt-5 pt-5">
     <div class="container" data-aos="fade-up">
       <div class="section-title">
-        <h2>Pendaftaran Peserta</h2>
+        <h2>Pendaftaran peserta</h2>
         <p>{{ $kegiatan->nama_kegiatan }}</p>
       </div>
 
@@ -34,26 +34,60 @@
         @csrf
         <div class="row">
           <div class="col-md-6 form-group">
-            <input type="text" name="nik" class="form-control" placeholder="NIK" required>
+            <label class="form-label">NIK</label>
+            <input type="text" name="data_nik" class="form-control"
+              value="3578"
+             required
+             oninput="
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (!this.value.startsWith('3578')) {
+                  this.value = '3578' + this.value.slice(4);
+                }
+                this.value = this.value.slice(0, 16);
+              "
+              onkeydown="
+              let c = this.selectionStart;
+              if (c <= 4 && (event.key == 'Backspace' || event.key === 'Delete')) {
+                event.preventDefault();
+              }
+            "
+            onblur="
+                if(this.value.length !== 16) {
+                  alert('NIK salah');
+                }
+              "
+             >
           </div>
           <div class="col-md-6 form-group mt-3 mt-md-0">
-            <input type="text" name="no_kk" class="form-control" placeholder="No KK" required>
+            <label class="form-label">No_kk</label>
+            <input type="text" name="No_kk" class="form-control"
+            required
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,16);"
+            >
           </div>
         </div>
         <div class="form-group mt-3">
-          <input type="text" name="nama_lengkap" class="form-control" placeholder="Nama Lengkap" required>
+          <label class="form-label">Nama_Lengkap</label>
+          <input type="text" name="data_nama_lengkap" class="form-control" required>
         </div>
         <div class="form-group mt-3">
-          <textarea name="alamat" class="form-control" rows="3" placeholder="Alamat" required></textarea>
+         <label class="form-label">Alamat</label>
+          <textarea name="data_alamat" class="form-control" rows="3" required></textarea>
         </div>
         <div class="form-group mt-3">
-          <input type="text" name="no_telp" class="form-control" placeholder="No Telepon" required>
+          <label class="form-label">No_Telpon</label>
+          <input type="text" name="data_no_telp" class="form-control" 
+          required
+          oninput=" this.value = this.value.replace(/[^0-9]/g, '').slice(0,15);"
+          >
         </div>
         <div class="form-group mt-3">
-          <input type="text" name="kecamatan" class="form-control" placeholder="Kecamatan" required>
+          <label class="form-label">Kecamatan</label>
+          <input type="text" name="data_kecamatan" class="form-control" required>
         </div>
         <div class="form-group mt-3">
-          <input type="text" name="kelurahan" class="form-control" placeholder="Kelurahan" required>
+        <label class="form-label">kelurahan</label>
+          <input type="text" name="data_kelurahan" class="form-control" required>
         </div>
         <div class="form-group mt-3">
           <select name="subKegiatan_id" class="form-control">
@@ -63,7 +97,7 @@
             @endforeach
           </select>
         </div>
-        <div class="text-center mt-4"><button type="submit" class="btn btn-primary">Daftar</button></div>''
+        <div class="text-center mt-4"><button type="submit" class="btn btn-primary">Daftar</button></div>
        
 
         
@@ -86,7 +120,7 @@
 
   <footer id="footer" class="footer position-relative">
         <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="sitename">BLA.</strong> <span>All Rights Reserved</span></p>
+            <p>© <span>Copyright</span> <strong class="sitename">SiPemuda</strong> <span>All Rights Reserved</span></p>
         </div>
     </footer>
 

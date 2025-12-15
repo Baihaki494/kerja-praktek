@@ -78,6 +78,26 @@
 
 <main class="main">
 
+<style>
+/* Kurangi jarak kosong di bawah judul */
+.page-title {
+    padding-top: 80px !important; /* sebelumnya 120px */
+    padding-bottom: 10px !important;
+}
+
+/* Atur jarak teks deskripsi agar lebih dekat dengan judul */
+.page-title .heading p {
+    margin-top: 5px !important;
+    margin-bottom: 10px !important;
+}
+
+/* Kurangi gap antara section atas dan Deskripsi */
+#blog-details {
+    margin-top: -20px !important;
+}
+</style>
+
+
     <!-- Page Title -->
     <div class="page-title" data-aos="fade">
         <div class="heading">
@@ -114,7 +134,7 @@
                             <!-- Sub Kegiatan dengan Dropdown + Button -->
                             <h2 class="title text-left" id="subKegiatan">Sub Kegiatan</h2>
 
-                            {{-- 🔔 ALERT NOTIFIKASI KUOTA ATAU BERHASIL --}}
+                            {{--  ALERT NOTIFIKASI KUOTA ATAU BERHASIL --}}
                             @if (session('error'))
                                 <div class="alert alert-danger mt-3">
                                     <i class="bi bi-exclamation-triangle-fill"></i>
@@ -128,7 +148,7 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
-                            {{-- 🔔 END ALERT --}}
+                            {{--  END ALERT --}}
 
                             <form action="{{ route('peserta.create', $kegiatan->id) }}" method="GET">
                                 @csrf
