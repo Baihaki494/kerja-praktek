@@ -35,8 +35,8 @@
         <div class="row">
           <div class="col-md-6 form-group">
             <label class="form-label">NIK</label>
-            <input type="text" name="data_nik" class="form-control"
-              value="3578"
+            <input type="text" name="data_nik" class="form-control @error('data_nik') is-invalid @enderror"
+              value="{{ old('data_nik', '3578') }}"
              required
              oninput="
                 this.value = this.value.replace(/[^0-9]/g, '');
@@ -53,22 +53,36 @@
             "
             onblur="
                 if(this.value.length !== 16) {
-                  alert('NIK salah');
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'peringatan NIK',
+                    text: 'NIK harus 16 digit lengkap. Silahkan periksa kembali.',
+                    confrimButtonText: 'OK'
+                  });
                 }
               "
              >
+        @error('data_nik')<div class="text-danger small mt-1">{{ $message }}</div>
+        @enderror
           </div>
           <div class="col-md-6 form-group mt-3 mt-md-0">
             <label class="form-label">No_kk</label>
-            <input type="text" name="No_kk" class="form-control"
+            <input type="text" name="No_kk" class="form-control @error('No_kk') is-invalid @enderror"
             required
+            value="{{ old('No_kk') }}"
             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,16);"
             >
+            @error('No_kk') <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
           </div>
         </div>
         <div class="form-group mt-3">
           <label class="form-label">Nama_Lengkap</label>
-          <input type="text" name="data_nama_lengkap" class="form-control" required>
+          <input type="text" name="data_nama_lengkap" class="form-control @error('data_nama_lengkap') is-invalid @enderror" 
+          value="{{ old('data_nama_lengkap') }}"
+          required>
+          @error('data_nama_lengkap') <div class="text-danger small mt-1">{{ $message }}</div>
+         @enderror
         </div>
         <div class="form-group mt-3">
          <label class="form-label">Alamat</label>

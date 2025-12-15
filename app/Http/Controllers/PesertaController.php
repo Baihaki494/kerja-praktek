@@ -24,13 +24,13 @@ class PesertaController extends Controller
         $kegiatan = Kegiatan::findOrFail($id);
 
         $validated = $request->validate([
-            'nik'           => ['required', 'digits:16', 'regex:/^3578[0-9]{12}$/'],
-            'no_kk'         => ['required', 'digits:16', 'numeric'], 
-            'nama_lengkap'  => 'required',
-            'alamat'        => 'required',
-            'no_telp'       => 'required',
-            'kecamatan'  => 'required',
-            'kelurahan'  => 'required',
+            'data_nik'           => ['required', 'digits:16', 'regex:/^3578[0-9]{12}$/'],
+            'No_kk'         => ['required', 'digits:16', 'numeric'], 
+            'data_nama_lengkap'  => 'required',
+            'data_alamat'        => 'required',
+            'data_no_telp'       => 'required',
+            'data_kecamatan'  => 'required',
+            'data_kelurahan'  => 'required',
             'subKegiatan_id' => 'nullable|exists:subKegiatan,id',
         ]);
 
@@ -47,13 +47,13 @@ class PesertaController extends Controller
         $peserta = Peserta::create([
             'kegiatan_id'     => $kegiatan->id,
             'subKegiatan_id' => $validated['subKegiatan_id'] ?? null,
-            'nik'             => $validated['nik'],
-            'no_kk'           => $validated['no_kk'],
-            'nama_lengkap'    => $validated['nama_lengkap'],
-            'alamat'          => $validated['alamat'],
-            'no_telp'         => $validated['no_telp'],
-            'kecamatan'    => $validated['kecamatan'],
-            'kelurahan'    => $validated['kelurahan'],
+            'nik'             => $validated['data_nik'],
+            'no_kk'           => $validated['No_kk'],
+            'nama_lengkap'    => $validated['data_nama_lengkap'],
+            'alamat'          => $validated['data_alamat'],
+            'no_telp'         => $validated['data_no_telp'],
+            'kecamatan'    => $validated['data_kecamatan'],
+            'kelurahan'    => $validated['data_kelurahan'],
         ]);
 
         // Hitung jumlah peserta terkini
