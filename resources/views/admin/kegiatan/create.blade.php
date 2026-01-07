@@ -93,11 +93,10 @@
                         <!-- Basic Forms -->
                         <div class="card">
                             <h5 class="card-header">Tambah Kegiatan</h5>
-                            <div class="card-body">
+                        
                                 <form action="{{ route('admin.kegiatan.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                    
-                                    
+                                                      
                                     
                                     <div class="mb-3">
         <label for="kode_kegiatan" class="form-label">Kode Kegiatan</label>
@@ -169,6 +168,12 @@
         <label for="link_short_kegiatan" class="form-label">Link Short</label>
         <input type="url" class="form-control" id="link_short_kegiatan" name="link_short_kegiatan">
     </div>
+
+    <div class="mb-3">
+    <label for="gambar" class="form-label">Gambar Kegiatan</label>
+    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+    <small class="text-muted">Pilih foto kegiatan langsung dari laptop Anda (Format: jpg, png, webp).</small>
+</div>
 
                                     <button type="submit" class="btn btn-primary">Tambah</button>
                                     <a href="{{ route('admin.kegiatan.index') }}" class="btn btn-secondary">Kembali</a>

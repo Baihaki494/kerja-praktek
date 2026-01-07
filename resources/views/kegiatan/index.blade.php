@@ -70,6 +70,27 @@
             border-radius: 0.25rem;
         }
         
+        .post-img {
+        width: 100%;
+        height: 250px; /* Atur tinggi kotak gambar agar seragam */
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0; /* Warna latar jika gambar tidak penuh */
+    }
+
+    .post-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Gunakan 'cover' agar gambar memenuhi kotak tanpa gepeng, atau 'contain' jika tidak ingin ada bagian terpotong */
+        transition: 0.3s;
+    }
+    
+    .post-img:hover img {
+        transform: scale(1.1); /* Efek zoom saat kursor di atas gambar */
+    }
+
     </style>
 </head>
 
@@ -124,12 +145,11 @@
                         <article>
                             <div class="post-img">
                                 <a href="{{ route('kegiatan.show', $item->id) }}">
-                                    <img src="{{ asset('storage/kegiatan/' . ($item->gambar ?? 'image1.jpg')) }}" 
-                                         alt="{{ $item->nama_kegiatan }}" 
-                                         class="img-fluid">
+                                <img src="{{ $item->gambar ? asset('assets/img/kegiatan/' . $item->gambar) : asset('assetss/img/services/services-5.webp') }}" 
+                                     alt="{{ $item->nama_kegiatan }}" 
+                                     class="img-fluid">
                                 </a>
                             </div>
-                            
                             <h2 class="title">
                                 <a href="{{ route('kegiatan.show', $item->id) }}">{{ $item->nama_kegiatan }}</a>
                             </h2>

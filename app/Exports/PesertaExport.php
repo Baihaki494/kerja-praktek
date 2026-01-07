@@ -16,7 +16,7 @@ class PesertaExport implements FromCollection, WithHeadings
                 return [
                     'id' => $peserta->id,
                     'nama_kegiatan' => $peserta->kegiatan ? $peserta->kegiatan->nama_kegiatan : '-',
-                    'nama_sub_kegiatan' => $peserta->subKegiatan ? $peserta->subKegiatan->nama_subKegiatan : '-', //  pakai nama_sub_kegiatan
+                    'nama_sub_kegiatan' => $peserta->subKegiatan ? $peserta->subKegiatan->nama_subKegiatan : '-', 
                     'nik' => $peserta->nik,
                     'no_kk' => $peserta->no_kk,
                     'nama_lengkap' => $peserta->nama_lengkap,

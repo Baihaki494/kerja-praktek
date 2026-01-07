@@ -2,12 +2,12 @@
 
 return [
     'default' => [
-        'format' => 'svg', // bisa juga 'png'
-        'size' => 200,
+        'format' => 'svg',
+        'size' => 300,
         'margin' => 1,
         'errorCorrection' => 'H',
         'style' => 'square',
         'eye' => 'square',
-        'driver' => 'gd', // 👈 ini penting, bukan imagick
+        'driver' => 'gd', 
     ],
 ];

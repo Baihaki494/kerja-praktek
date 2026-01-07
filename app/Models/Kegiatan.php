@@ -28,6 +28,7 @@ class Kegiatan extends Model
         'status_kegiatan',
         'link_full_kegiatan',
         'link_short_kegiatan',
+        'gambar',
     ];
 
     protected $casts = [

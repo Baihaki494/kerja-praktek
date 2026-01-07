@@ -53,9 +53,18 @@ class AdminKegiatanController extends Controller
             'status_kegiatan'      => 'nullable|boolean',
             'link_full_kegiatan'   => 'nullable|url',
             'link_short_kegiatan'  => 'nullable|url',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        Kegiatan::create($validated);
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            // Simpan ke folder public/assets/img/kegiatan
+            $file->move(public_path('assets/img/kegiatan'), $nama_file);
+            $validated['gambar'] = $nama_file;
+        }
+
+        \App\Models\Kegiatan::create($validated);
 
         return redirect()->route('admin.kegiatan.index')
                          ->with('success', 'Kegiatan berhasil ditambahkan.');
@@ -89,8 +98,20 @@ class AdminKegiatanController extends Controller
             'status_kegiatan'      => 'nullable|boolean',
             'link_full_kegiatan'   => 'nullable|url',
             'link_short_kegiatan'  => 'nullable|url',
+            'gambar'               => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($kegiatan->gambar && file_exists(public_path('assets/img/kegiatan/' . $kegiatan->gambar))) {
+                unlink(public_path('assets/img/kegiatan/' . $kegiatan->gambar));
+            }
+    
+            $file = $request->file('gambar');
+            $nama_file = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/img/kegiatan'), $nama_file);
+            $validated['gambar'] = $nama_file;
+        }
         
         $kegiatan->update($validated);
 

@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    public function pendaftaran()
+    {
+        // Satu user bisa memiliki banyak data pendaftaran (peserta)
+        return $this->hasMany(Peserta::class, 'user_id');
+    }
 }

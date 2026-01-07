@@ -47,6 +47,22 @@
           <li><a href="#about">Tentang</a></li>
           <li><a href="/kegiatan">Kegiatan</a></li>
           <li><a href="#contact">Kontak</a></li>
+
+          @auth
+      <li class="dropdown"><a href="#"><span>{{ Auth::user()->name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+        <ul>
+          <li>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
+          </li>
+        </ul>
+      </li>
+    @else
+      <li><a href="{{ route('login') }}">Login</a></li>
+      <li><a href="{{ route('register') }}">Daftar Akun</a></li>
+    @endauth
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

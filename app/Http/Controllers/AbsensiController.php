@@ -26,13 +26,24 @@ class AbsensiController extends Controller
     // Unduh QR code sebagai PNG
     public function download($id)
     {
-        $peserta = Peserta::findOrFail($id);
-        $url = route('absensi.scan', $peserta->id);
-        $image = QrCode::format('svg')->size(300)->generate($url);
+        if (ob_get_contents()) ob_end_clean();
 
-        return Response::make($image, 200, [
-            'Content-Type' => 'image/svg',
-            'Content-Disposition' => 'attachment; filename="qr_absensi_'.$peserta->id.'.svg"',
-        ]);
+    try{
+        $peserta = Peserta::findOrFail($id);
+        $url = route('absensi.scan', ['id' => $peserta->id]);
+        $qrCode = QrCode::format('svg')
+        ->size(300)
+        ->margin(1)
+        ->errorCorrection('H')
+        ->generate($url);
+
+        return response($qrCode)
+        ->header('Content-Type', 'image/svg+xml')
+        ->header('Content-Disposition', 'attachment; filename="qr_absensi_'.$peserta->id.'.svg"');  
+        
+     } catch (\Exception $e) {
+        return "Gagal mengunduh: " . $e->getMessage();
+
+         }
     }
 }

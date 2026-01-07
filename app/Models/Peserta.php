@@ -26,6 +26,11 @@ class Peserta extends Model
         'hadir',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     /**
      * Relasi ke tabel kegiatan
      */
@@ -42,5 +47,4 @@ class Peserta extends Model
         return $this->belongsTo(SubKegiatan::class, 'subKegiatan_id', 'id');
     }
 
-    
 }

@@ -45,6 +45,7 @@ class PesertaController extends Controller
         
 
         $peserta = Peserta::create([
+            'user_id'         => auth()->id(),
             'kegiatan_id'     => $kegiatan->id,
             'subKegiatan_id' => $validated['subKegiatan_id'] ?? null,
             'nik'             => $validated['data_nik'],

@@ -10,14 +10,13 @@ use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\SubKegiatanController;
 use App\Http\Controllers\AbsensiController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
-
-
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
+/*
 Route::get('/peserta/{id}/download-qr', function ($id) {
     $url = route('absensi.scan', ['id' => $id]);
     $qrImage = QrCode::format('svg')->size(300)->generate($url);
@@ -25,7 +24,7 @@ Route::get('/peserta/{id}/download-qr', function ($id) {
         ->header('Content-Type', 'image/svg+xml')
         ->header('Content-Disposition', 'attachment; filename="qr_absensi_'.$id.'.svg"');
 })->name('peserta.download-qr');
-
+*/
 
 Route::get('/beranda', [AdminController::class, 'index'])->name('beranda');
 
@@ -33,14 +32,11 @@ Route::get('/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan');
 Route::get('/kegiatan/{id}', [KegiatanController::class, 'show'])->name('kegiatan.show');
 
 
-
-
 Route::get('/kegiatan/{kegiatan}/subKegiatan', [SubKegiatanController::class, 'index'])->name('subKegiatan.index');
-Route::get('/subKegiatan/{id}/daftar', [SubKegiatanController::class, 'show'])->name('subKegiatan.show');
-Route::post('/subKegiatan/{id}/daftar', [SubKegiatanController::class, 'store'])->name('subKegiatan.store');
-
-
-
+Route::middleware('auth')->group(function () {
+    Route::get('/subKegiatan/{id}/daftar', [SubKegiatanController::class, 'show'])->name('subKegiatan.show');
+    Route::post('/subKegiatan/{id}/daftar', [SubKegiatanController::class, 'store'])->name('subKegiatan.store');
+});
 
 Route::get('/peserta/success/{id}', [PesertaController::class, 'success'])
     ->name('peserta.success');
@@ -62,8 +58,13 @@ Route::post('/kegiatan/{id}/daftar', [PesertaController::class, 'store'])->name(
 Route::get('peserta/export', [AdminPesertaController::class, 'export'])->name('peserta.export');
 Route::post('peserta/import', [AdminPesertaController::class, 'import'])->name('peserta.import');
 
+// Rute User
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
 // Admin
 Route::get('admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
@@ -74,6 +75,13 @@ Route::post('admin/logout', [AdminController::class, 'logout'])->name('admin.log
 Route::get('admin/register', [AdminController::class, 'showRegisterForm'])->name('admin.register.form');
 Route::post('admin/register', [AdminController::class, 'register'])->name('admin.register.submit');
 
+// Rute Autentikasi User (Peserta)
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
 // Rute untuk halaman admin-index
 Route::get('admin/index', [AdminController::class, 'index'])->name('admin.index')->middleware('auth:admin');
@@ -94,6 +102,3 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     'peserta' => 'peserta'
     ]);
 });
-
-
-
